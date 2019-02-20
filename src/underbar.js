@@ -40,14 +40,14 @@
   _.last = function(array, n) {
     //[1, 2, 3], 2) -> [2, 3]
     var output = [];
-    if (n === undefined){
+    if (n === undefined) {
       return array.pop();
-    } else if (n > array.length){
+    } else if (n > array.length) {
       return array;
-    };
-    for (var i = array.length-1; i >= array.length-n; i--){
+    }
+    for (var i = array.length - 1; i >= array.length - n; i--) {
       output.unshift(array[i]);
-    };
+    }
     return output;
     // return n === undefined ? array[array.length-1] : array.slice(array.length, n);
   };
@@ -58,15 +58,15 @@
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
-    if (Array.isArray(collection)){
+    if (Array.isArray(collection)) {
       for (var i = 0; i < collection.length; i++) {
         iterator(collection[i], i, collection);
-      };
+      }
     } else if (collection instanceof Object) {
       for (var key in collection) {
         iterator(collection[key], key, collection);
-      };
-    };
+      }
+    }
   };
 
   // Returns the index at which value can be found in the array, or -1 if value
@@ -89,10 +89,10 @@
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
     var newArr = [];
-    _.each(collection, function(num){
-      if (test(num) === true){
-        newArr.push(num)
-      };
+    _.each(collection, function(num) {
+      if (test(num) === true) {
+        newArr.push(num);
+      }
     });
     return newArr;
   };
@@ -103,23 +103,34 @@
     // copying code in and modifying it
     var outputArr = [];
     var filteredArr = _.filter(collection, test);
-    _.each(collection, function(val){
-      if (!filteredArr.includes(val)){
-        outputArr.push(val)
+    _.each(collection, function(val) {
+      if (!filteredArr.includes(val)) {
+        outputArr.push(val);
       }
     });
-  return outputArr;
+    return outputArr;
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
-    var outputArr = [];
-    for (var i = 0; i < array.length; i++) {
-      if (!outputArr.includes(array[i])) {
-        outputArr.push(array[i]);
+    var result = [];
+    var uniqueIteratedArr = [];
+    if (iterator){
+      var newArray = _.map(array, iterator, context);
+      for (var i = 0; i < newArray.length; i++) {
+        if (!uniqueIteratedArr.includes(newArray[i])) {
+          uniqueIteratedArr.push(newArray[i]);
+          result.push(array[i])
+        }
       }
-    };
-    return outputArr;
+    } else {
+      for (var j = 0; j < array.length; j++) {
+        if (!result.includes(array[j])) {
+          result.push(array[j]);
+        }
+      }
+    }
+    return result;
   };
 
 
@@ -128,9 +139,12 @@
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+    if (!iterator){
+      iterator = _.identity;
+    };
     var outputArr = [];
-    _.each(collection, function(val){
-      outputArr.push(iterator(val))
+    _.each(collection, function(val) {
+      outputArr.push(iterator(val));
     });
     return outputArr;
   };
@@ -174,19 +188,19 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
-    if (accumulator || accumulator === 0){
+    if (accumulator || accumulator === 0) {
       var memo = accumulator;
-      _.each(collection, function(val){
+      _.each(collection, function(val) {
         memo = iterator(memo, val);
-      })
-      return memo
-    } else if (!accumulator){
+      });
+      return memo;
+    } else if (!accumulator) {
       var memo = collection[0];
       var newArr = collection.slice(1);
-      _.each(newArr, function(val){
+      _.each(newArr, function(val) {
         memo = iterator(memo, val);
-      })
-      return memo
+      });
+      return memo;
     }
   };
 

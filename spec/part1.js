@@ -383,7 +383,7 @@
       });
 
       it('should apply a function to every value in an array', function() {
-        var multiplyByTwo = function(x){return x*2};
+        var multiplyByTwo = function(x) { return x * 2; };
 
         expect(_.map([1, 2, 3], multiplyByTwo)).to.eql([2, 4, 6]);
       });
@@ -474,6 +474,8 @@
         var orderTraversed = [];
 
         _.reduce([1, 2, 3, 4], function(memo, item) {
+          var val = memo * item / memo; //10 * 1 = 10/ 10 = 1 ... 
+          orderTraversed.push(val);
           // FILL_ME_IN
           // Add a line here that makes this test pass
           // for a working implementation of reduce
